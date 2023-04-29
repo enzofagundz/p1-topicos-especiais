@@ -41,6 +41,7 @@ $(document).ready(function () {
         ultimoID = novoID;
         if (nomeCidade == '' || descricaoCidade == '' || fotoURL == '') {
             alert("Os campos nao podem estar vazios");
+            return false;
         } else {
             $("#cadastro").addClass("hide");
             $("#lista").removeClass("hide");
@@ -107,25 +108,9 @@ $(document).ready(function () {
                 $("#cadastro").addClass("hide");
             });
         } else {
-            $botaoClicado.closest('.card').remove();
+            $botaoClicado.closest('.col').remove(); //antes era .card
         };
     });
-
-    //Pesquisa somente o nome da cidade identico ao digitado no input
-
-    // $("#pesquisar").keyup(function () {
-    //     let pesquisa = $(this).val();
-    //     let $listaCidades = $("#lista-cidades .card .card-content .card-title");
-
-    //     for (let i = 0; i < $listaCidades.length; i++) {
-    //         let cidade = $listaCidades[i];
-    //         if ($(cidade).text().indexOf(pesquisa) > -1) {
-    //             $(cidade).closest('.card').show();
-    //         } else {
-    //             $(cidade).closest('.card').hide();
-    //         }
-    //     }
-    // });
 
     //Pesquisa o nome da cidade contendo o texto digitado no input, independente de ser identico ou não, encontrando inclusive partes do nome da cidade
 
@@ -134,11 +119,11 @@ $(document).ready(function () {
         $("#lista-cidades .card").filter(function () {
             let cidade = $(this).find(".card-title").text().toLowerCase();
             return cidade.indexOf(pesquisa) > -1;
-        }).show();
+        }).parent().show();
         $("#lista-cidades .card").filter(function () {
             let cidade = $(this).find(".card-title").text().toLowerCase();
             return cidade.indexOf(pesquisa) === -1;
-        }).hide();
+        }).parent().hide();
     });
     
 });
