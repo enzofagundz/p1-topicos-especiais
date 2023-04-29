@@ -1,0 +1,192 @@
+<!-- 
+Faculdade de Tecnologia de Lins - Prof Antonio Seabra 
+Prof. Felipe Maciel
+
+Implemente um sistema que seja possível você adicionar/editar/excluir/listar e procurar cidades que você conheceu. 
+OBS: não é necessário NENHUM tipo de persistência de dados, ou seja, ao atualizar o navegador toda a listagem é zerada/perdida.
+
+Funcionalidade 1 - Ajustes de interface (1 ponto)
+Funcionamento: note que ao abrir o arquivo, são exibidas todas as interfaces do sistema (listagem, adicionar e excluir). Deste modo, esta funcionalidade tem como objetivo você separar as interfaces para que elas sejam exibidas apenas no momento o qual o usuário clicar nos botões referentes a ela. Ao abrir o arquivo, deve ser exibida a listagem das cidades. Ao clicar no botão [CADASTRAR] - representado por um sinal de mais - deve ser exibida o formulário de cadastro, ao clicar sobre o ícone [LISTAR] - representado por um ícone contendo linhas dispostas de maneira vertical - deve-se exibir a lista de cidades e ao clicar no ícone [EDITAR] - representado por um lápis - deve ser exibido a interface de cadastro. Note que NESTA funcionalidade ainda não é necessário carregar nenhuma informação, nem na interface de listagem nem na edição.
+
+Funcionalidade 2 - Adicionar um registro (2 pontos)
+Funcionamento: após o usuário inserir os dados do formulário de cadastro e clicar em [ADICIONAR], deve ser exibida a interface de listagem contendo os dados informados no formulário. A apresentação dos dados deve seguir o layout apresentado contendo a númeraçao, nome da cidade, breve descrição, url foto (utilize um url da internet) e descrição completa. Após a inserção, todos os campos do formulário devem voltar a ficarem vazios.
+OBS: note que no arquivo .js existe uma função nomeado cortarDescricao que é responsável por retornar as 11 primeiras palavras de uma descrição. Assim, dada uma descrição contendo 100 palavras, esta função irá te retornar as 11 primeiras palavras desta descrição. É OBRIGATÓRIA a utilização desta função para preencher a breve descrição do registro.
+
+Funcionalidade 3 - Editar um registro parte 1 (1,5 pontos)
+Funcionamento: ao clicar no ícone [EDITAR] - representado por um lápis - os dados atuais devem ser previamente CARREGADOS nos campos que se encontram na interface editar. 
+
+Funcionalidade 4 - Editar um registro parte 2 (1,5 pontos)
+Funcionamento: ao clicar em [EDITAR], deve-se atualizar os dados do registro em questão.
+
+Funcionalidade 5 - Excluir um registro (1 ponto)
+Funcionamento: ao clicar no ícone [EXCLUIR] - representado por uma lixeira - deve-se excluir o registro em questão.
+
+Funcionalidade 6 - Procurar um registro parte 1 (1,5 pontos)
+Funcionamento: ao digitar o nome a ser procurado deve-se listar apenas o registro o qual o nome é EXATAMENTE IGUAL ao digitado no campo.
+
+Funcionalidade 7 - Procurar um registro parte 2 (1,5 pontos)
+Funcionamento: após procurar algum registro, ao apagar todo o conteúdo do campo pesquisar deve-se voltar a exibir TODOS os registros cadastrados.
+
+EXTRA EXTRA (1 ponto) 
+Funcionamento: na funcionalidade 6, em vez de listrar apenas o registro EXATAMENTE IGUAL ao digitado, liste todos os registro que CONTENHAM em seu nome parte do que foi digitado. Adicionalmente deve-se DESCONSIDERAR o case sensitive.
+
+********************************************************************************************
+--> 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Por onde andei</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+
+</head>
+
+<body>
+
+  <header class="teal">
+    <nav class="teal darken-2">
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo center">Por onde Andei</a>
+      </div>
+    </nav>
+  </header>
+ 
+  <main>
+    <!-- formulario de cadastro  -->
+    <div class="container hide" id="cadastro">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="cidade" type="text">
+              <label for="cidade">Cidade</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea id="descricao"
+                class="materialize-textarea"></textarea>
+              <label for="descricao">Descrição</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="foto" type="text">
+              <label for="foto">URL da foto</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <button type="button" class="btn right" id="btn-cadastrar">Cadastrar</button>
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+    </div>
+    <!-- / fim do formulario de cadastro -->
+
+
+    <!-- formulario de edicao  -->
+    <div class="container hide" id="edicao">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="id" type="text" disabled="disabled" placeholder="Id Cidade">
+              <label for="id">Id Cidade</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="cidadeEdicao" type="text" placeholder="Cidade">
+              <label for="cidadeEdicao">Cidade</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea id="descricaoEdicao" class="materialize-textarea" placeholder="Descrição"></textarea>
+              <label for="descricaoEdicao" class="active">Descrição</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="fotoEdicao" type="text" placeholder="URL da foto">
+              <label for="fotoEdicao" class="active">URL da foto</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <button type="button" class="btn right" id="btn-editar">Editar</button>
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+    </div>
+    <!-- / fim do formulario de edicao -->
+
+    <!-- listagem de lugares -->
+    <div class="container" id="lista">
+
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="pesquisar" type="text" placeholder="Pesquisar cidade">
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="row" id="lista-cidades">
+        <!--
+
+          <div class="col s12 m6 l4">
+            <div class="card">
+              <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="https://th.bing.com/th/id/OIP.iSJYAI1JotBat8xXM9IA3AHaE8?pid=ImgDet&rs=1">
+              </div>
+              <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">#1 - Budapeste<i
+                  class="material-icons right">more_vert</i></span>
+                  <p>Budapeste é a capital, cidade mais populosa e principal centro financeiro...</p>
+                  <hr>
+                  <div class="btn-actions">
+                    <i class="material-icons btn-editar">edit</i>
+                    <i class="material-icons btn-delete">delete</i>
+                  </div>
+                </div>
+                <div class="card-reveal">
+                  <span class="card-title grey-text text-darken-4">Budapeste</span>
+                  <p>Budapeste é a capital, cidade mais populosa e principal centro financeiro, corporativo, mercantil e cultural da Hungria. É a nona maior cidade da União Europeia e recebeu a classificação de cidade global alpha, por parte do Globalization and World Cities Study Group & Network. </p>
+                </div>
+              </div>
+            </div>
+          -->
+      </div>
+    </div>
+    <!-- / fim da listagem de lugares -->
+
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large">
+        <i class="large material-icons">menu</i>
+      </a>
+      <ul>
+        <li><a class="btn-floating"><i class="material-icons menu" data-content="lista">list</i></a></li>
+        <li><a class="btn-floating"><i class="material-icons menu" data-content="cadastro">add</i></a></li>
+      </ul>
+    </div>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+hr{
+    margin: 12px 0px;
+}
+.material-icons{
+    cursor: pointer;
+  }
+
+.btn-actions{
+    display: flex; 
+    justify-content: space-between; 
+    padding-top: 8px;
+}
+
+#cadastro, #edicao{
+    margin-top: 56px;
+}
